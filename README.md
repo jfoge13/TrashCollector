@@ -1,1 +1,1 @@
-# TrashCollector
+# trash_collector_starter
