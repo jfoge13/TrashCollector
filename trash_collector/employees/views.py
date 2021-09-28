@@ -40,7 +40,9 @@ def index(request):
         for customer in day_filter:
             if today > customer.suspend_end or today < customer.suspend_start:
                 some_list.append(customer)
-
+        for customer in some_list:
+            if today <= customer.date_of_last_pickup:
+                some_list.remove(customer)
 
         
         context = {
