@@ -40,9 +40,9 @@ def index(request):
         for customer in day_filter:
             if today > customer.suspend_end or today < customer.suspend_start:
                 some_list.append(customer)
-        for customer in some_list:
-            if today <= customer.date_of_last_pickup:
-                some_list.remove(customer)
+        # for customer in some_list:
+        #     if today >= customer.date_of_last_pickup:
+        #         some_list.remove(customer)
 
         
         context = {
@@ -95,6 +95,15 @@ def matching_zipcodes(request):
     }
     return render(request, 'employees/matching_zipcodes.html', context)
 
+def confirm(request, customer_id, some_list):
+    Customer = apps.get_model('customers.Customer')
+    customer = Customer.objects.get(pk=customer_id)
+    customer.date_of_last_pickup = date.today()
+    some_list.remove(customer)
+    return HttpResponseRedirect(reverse('employees:index'))
+
+
+#     return HttpResponseRedirect(reverse('employees:index'))
 # def matching_zipcodes(request):
 #     user = request.user
 #     employee = Employee.objects.get(user_id=user.id)

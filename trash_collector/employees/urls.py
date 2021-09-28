@@ -10,4 +10,5 @@ urlpatterns = [
     path('new/', views.create, name="create"),
     path('edit_profile/', views.edit_profile, name="edit_profile"),
     path('matching_zipcodes/', views.matching_zipcodes, name="matching_zipcodes"),
+    path('confirm/', views.confirm, name="confirm"),
 ]
