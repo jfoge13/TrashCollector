@@ -19,9 +19,13 @@ def index(request):
 
         today = date.today()
         
+        Customer = apps.get_model('customers.Customer')
+        matching_zip = Customer.objects.filter(zip_code = logged_in_employee.zip_code)
+
         context = {
             'logged_in_employee': logged_in_employee,
-            'today': today
+            'today': today,
+            'matching_zip': matching_zip
         }
         return render(request, 'employees/index.html', context)
     except ObjectDoesNotExist:
@@ -58,3 +62,25 @@ def edit_profile(request):
             'logged_in_employee': logged_in_employee
         }
         return render(request, 'employees/edit_profile.html', context)
+
+def matching_zipcodes(request):
+    logged_in_user = request.user
+    Customer = apps.get_model('customers.Customer')
+    matching_zip = Customer.objects.filter(logged_in_user.zip_code == Customer.zip_code)
+    context = {
+        'matching_zip': matching_zip
+    }
+    return render(request, 'employees/matching_zipcodes.html', context)
+
+# def matching_zipcodes(request):
+#     user = request.user
+#     employee = Employee.objects.get(user_id=user.id)
+#     Customer = apps.get_model('customers.customer')
+#     customers = Customer.objects.all()
+#     matching_zipcode = []
+#     for customer in customers:
+#         if customer.zip_code == employee.zip_code:
+#             matching_zipcode.append(customer)
+
+#     return render(request, 'employees/index.html')
+
