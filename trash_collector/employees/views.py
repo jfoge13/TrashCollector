@@ -1,3 +1,4 @@
+# from trash_collector.customers.views import one_time_pickup
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.apps import apps
@@ -21,11 +22,19 @@ def index(request):
         
         Customer = apps.get_model('customers.Customer')
         matching_zip = Customer.objects.filter(zip_code = logged_in_employee.zip_code)
+        # some_list =[]
+        # for thing in matching_zip:
+        #     if thing.weekly_pickup == today.strftime("%A"):
+        #         if thing in some_list:
 
+        weekly_filter = matching_zip.filter(weekly_pickup = today.strftime("%A"))
+        day_filter = matching_zip.filter(one_time_pickup = today.strftime("%Y-%m-%d"))
+            
         context = {
             'logged_in_employee': logged_in_employee,
             'today': today,
-            'matching_zip': matching_zip
+            'weekly_filter': weekly_filter,
+            'day_filter': day_filter,
         }
         return render(request, 'employees/index.html', context)
     except ObjectDoesNotExist:
