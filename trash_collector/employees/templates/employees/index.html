@@ -7,11 +7,8 @@
 {% block content %}
 {% if user.is_authenticated %}
 Hello Employee {{ user.username }}!
-{% for customer in day_filter %}
-{{customer.name}}
-{% endfor %}
-{% for customer in weekly_filter %}
-{{customer.name}}
+{% for customer in some_list %}
+<div>{{customer.name}}</div>
 {% endfor %}
 {% else %}
 <p>You are at the employee index, but you are not logged in.</p>

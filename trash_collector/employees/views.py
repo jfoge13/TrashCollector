@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import date
 from .models import Employee
+import datetime
 # Create your views here.
 
 # TODO: Create a function for each path created in employees/urls.py. Each will need a template as well.
@@ -29,12 +30,23 @@ def index(request):
 
         weekly_filter = matching_zip.filter(weekly_pickup = today.strftime("%A"))
         day_filter = matching_zip.filter(one_time_pickup = today.strftime("%Y-%m-%d"))
-            
+        # weekly_suspend_filter = weekly_filter.exclude(Customer.suspend_end < today.strftime("%Y-%m-%d"))
+        # day_suspend_filter = day_filter.exclude(Customer.suspend_end < today.strftime("%Y-%m-%d"))
+
+        some_list = []
+        for customer in weekly_filter:
+            if today > customer.suspend_end or today < customer.suspend_start:
+                some_list.append(customer)
+        for customer in day_filter:
+            if today > customer.suspend_end or today < customer.suspend_start:
+                some_list.append(customer)
+
+
+        
         context = {
             'logged_in_employee': logged_in_employee,
             'today': today,
-            'weekly_filter': weekly_filter,
-            'day_filter': day_filter,
+            'some_list': some_list,
         }
         return render(request, 'employees/index.html', context)
     except ObjectDoesNotExist:
