@@ -35,15 +35,36 @@ def index(request):
 
         some_list = []
         for customer in weekly_filter:
-            if today > customer.suspend_end or today < customer.suspend_start:
+            if customer.suspend_end == None and customer.suspend_end == None:
                 some_list.append(customer)
+            elif today > customer.suspend_end or today < customer.suspend_start:
+                some_list.append(customer)
+            else:
+                pass
         for customer in day_filter:
-            if today > customer.suspend_end or today < customer.suspend_start:
+            if customer.suspend_end == None and customer.suspend_end == None:
                 some_list.append(customer)
-        # for customer in some_list:
-        #     if today >= customer.date_of_last_pickup:
+            elif today > customer.suspend_end or today < customer.suspend_start:
+                some_list.append(customer)   
+            else:
+                pass
+        for customer in some_list:
+            if customer.date_of_last_pickup == today:
+                some_list.remove(customer)
+        if len(some_list) == 1:
+            for customer in some_list:
+                if customer.date_of_last_pickup == today:
+                    some_list.clear()
+        # counter = 0
+        # while counter < len(some_list) + 1:
+        #     if customer.date_of_last_pickup == today:
         #         some_list.remove(customer)
+        #     counter += 1
 
+        # while some_list != []:
+        #     for customer in some_list:
+        #         if customer.date_of_last_pickup == today:
+        #             some_list.remove(customer)
         
         context = {
             'logged_in_employee': logged_in_employee,
@@ -86,21 +107,30 @@ def edit_profile(request):
         }
         return render(request, 'employees/edit_profile.html', context)
 
-def matching_zipcodes(request):
-    logged_in_user = request.user
-    Customer = apps.get_model('customers.Customer')
-    matching_zip = Customer.objects.filter(logged_in_user.zip_code == Customer.zip_code)
-    context = {
-        'matching_zip': matching_zip
-    }
-    return render(request, 'employees/matching_zipcodes.html', context)
+# def matching_zipcodes(request):
+#     logged_in_user = request.user
+#     Customer = apps.get_model('customers.Customer')
+#     matching_zip = Customer.objects.filter(logged_in_user.zip_code == Customer.zip_code)
+#     context = {
+#         'matching_zip': matching_zip
+#     }
+#     return render(request, 'employees/matching_zipcodes.html', context)
 
-def confirm(request, customer_id, some_list):
+def confirm(request, customer_id):
     Customer = apps.get_model('customers.Customer')
-    customer = Customer.objects.get(pk=customer_id)
-    customer.date_of_last_pickup = date.today()
-    some_list.remove(customer)
+    customer_update = Customer.objects.get(pk=customer_id)
+    customer_update.balance += 20.00
+    customer_update.date_of_last_pickup = date.today()
+    customer_update.save()
     return HttpResponseRedirect(reverse('employees:index'))
+
+
+# def confirm(request, customer_id):
+#     Customer = apps.get_model('customers.Customer')
+#     customer = Customer.objects.get(pk=customer_id)
+#     customer.date_of_last_pickup = date.today()
+#     # some_list.remove(customer)
+#     return HttpResponseRedirect(reverse('employees:index'))
 
 
 #     return HttpResponseRedirect(reverse('employees:index'))

@@ -8,7 +8,7 @@
 {% if user.is_authenticated %}
 Hello Employee {{ user.username }}!
 {% for customer in some_list %}
-<div>{{customer.name}} - <a href="{% url 'employees:confirm' customer.id some_list %}">Confirm</a></div>
+<div>{{customer.name}} - <a href="{% url 'employees:confirm' customer.id %}">Confirm</a></div>
 {% endfor %}
 {% else %}
 <p>You are at the employee index, but you are not logged in.</p>
