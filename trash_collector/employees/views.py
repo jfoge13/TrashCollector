@@ -65,11 +65,21 @@ def index(request):
         #     for customer in some_list:
         #         if customer.date_of_last_pickup == today:
         #             some_list.remove(customer)
-        
+        results = []
+        if request.method == "POST":
+            search_from_form = request.POST.get('index')
+            customer_list = []
+            customer_list.append(Customer.objects.all())
+            # for customer in customer_list:
+            #     if search_from_form != customer.weekly_pickup:
+            #         customer_list.remove(customer)
+            results = Customer.objects.filter(weekly_pickup = search_from_form)
+
         context = {
             'logged_in_employee': logged_in_employee,
             'today': today,
             'some_list': some_list,
+            'results': results
         }
         return render(request, 'employees/index.html', context)
     except ObjectDoesNotExist:
@@ -124,7 +134,23 @@ def confirm(request, customer_id):
     customer_update.save()
     return HttpResponseRedirect(reverse('employees:index'))
 
+# def search_day(request):
+#     if request.method == "POST":
+#         Customer = apps.get_model('customers.Customer')
+#         search_from_form = request.POST.get('search_day')
+#         customer_list = []
+#         customer_list.append(Customer.objects.all())
+#         # for customer in customer_list:
+#         #     if search_from_form != customer.weekly_pickup:
+#         #         customer_list.remove(customer)
+#         results = Customer.objects.filter(weekly_pickup = search_from_form)
+#         context = {
+            
+#         }
+    
 
+    # if search_from_form == 
+    #     return HttpResponseRedirect(reverse('customers:index'))
 # def confirm(request, customer_id):
 #     Customer = apps.get_model('customers.Customer')
 #     customer = Customer.objects.get(pk=customer_id)

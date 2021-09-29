@@ -10,6 +10,35 @@ Hello Employee {{ user.username }}!
 {% for customer in some_list %}
 <div>{{customer.name}} - <a href="{% url 'employees:confirm' customer.id %}">Confirm</a></div>
 {% endfor %}
+
+<form class='card p-1 bg-light' action="{% url 'employees:index' %}" method="post">
+    {% csrf_token %}
+    Search for customers by day of the week: <input type="text" name="index" id="index"><br />
+    <div class='mb-1'>
+        <input class='btn btn-primary' type="submit" value="Submit">
+    </div>
+</form>
+
+<br>
+<br>
+<br>
+<h5>List of today's customers:</h5>
+<table class='table table-striped'>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for customer in results %}
+        <tr>
+            <td>{{customer.name}}</td>
+            <td>{{customer.address}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% else %}
 <p>You are at the employee index, but you are not logged in.</p>
 <a href="{% url 'login' %}">Log In</a>
