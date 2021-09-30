@@ -7,7 +7,7 @@
 {% block content %}
 <br>
 {% load static %}
-<img src="{% static 'trash_collector/american_flag.jpg' %}" class="img-fluid" alt="American Flag">
+<img src="{% static 'trash_collector/american_flag.jpg' %}" class="img-fluid rounded" alt="American Flag">
 {% if user.is_authenticated %}
 Hello {{ user.username }}. You don't have a group assigned. Please contact administrator or attempt to register again.
 <p><a href="{% url 'logout' %}">Log Out</a></p>
