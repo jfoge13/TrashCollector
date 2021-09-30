@@ -22,7 +22,7 @@ Hello {{ user.username }}!
                 </tr>
             </thead>
             <tbody>
-                {% for customer in some_list %}
+                {% for customer in complete_filter %}
                 <tr>
                     <td>{{customer.name}}</td>
                     <td>{{customer.address}}</td>
@@ -56,7 +56,7 @@ Hello {{ user.username }}!
                 </tr>
             </thead>
             <tbody>
-                {% for customer in results %}
+                {% for customer in search_results %}
                 <tr>
                     <td>{{customer.name}}</td>
                     <td>{{customer.address}}</td>
