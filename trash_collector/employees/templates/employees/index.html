@@ -6,39 +6,66 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-Hello Employee {{ user.username }}!
-{% for customer in some_list %}
-<div>{{customer.name}} - <a href="{% url 'employees:confirm' customer.id %}">Confirm</a></div>
-{% endfor %}
-
-<form class='card p-1 bg-light' action="{% url 'employees:index' %}" method="post">
-    {% csrf_token %}
-    Search for customers by day of the week: <input type="text" name="index" id="index"><br />
-    <div class='mb-1'>
-        <input class='btn btn-primary' type="submit" value="Submit">
+Hello {{ user.username }}!
+<br>
+<br>
+<br>
+<div class=row>
+    <div class=col-6>
+        <h2>Your assigned pickups:</h2>
+        <table class='table table-striped border border-dark'>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in some_list %}
+                <tr>
+                    <td>{{customer.name}}</td>
+                    <td>{{customer.address}}</td>
+                    <td><a href="{% url 'employees:confirm' customer.id %}">Confirm</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-</form>
+    <br>
+    <br>
+    <br>
+    <div class=col-6>
+        <form class='card p-1 bg-light' action="{% url 'employees:index' %}" method="post">
+            {% csrf_token %}
+            Search for customers by day of the week: <input type="text" name="index" id="index"><br />
+            <div class='mb-1'>
+                <input class='btn btn-primary' type="submit" value="Submit">
+            </div>
+        </form>
 
-<br>
-<br>
-<br>
-<h5>List of today's customers:</h5>
-<table class='table table-striped'>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Address</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for customer in results %}
-        <tr>
-            <td>{{customer.name}}</td>
-            <td>{{customer.address}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        <br>
+        <br>
+        <br>
+        <h5>Search Results:</h5>
+        <table class='table table-striped border border-dark'>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in results %}
+                <tr>
+                    <td>{{customer.name}}</td>
+                    <td>{{customer.address}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% else %}
 <p>You are at the employee index, but you are not logged in.</p>
 <a href="{% url 'login' %}">Log In</a>
